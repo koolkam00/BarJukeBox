@@ -62,7 +62,7 @@ export function TVDisplay({ sessionId }: TVDisplayProps) {
 
   const fetchQueue = async () => {
     try {
-      const response = await fetch(`https://${projectId}.functions.supabase.co/server/make-server-7f416d54/queue/${sessionId}`, {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/queue/${sessionId}`, {
         headers: { 'Authorization': `Bearer ${publicAnonKey}` }
       })
       

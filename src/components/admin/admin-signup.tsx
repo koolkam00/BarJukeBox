@@ -32,7 +32,7 @@ export function AdminSignup({ onSignupSuccess, onNavigateToLogin }: AdminSignupP
     }
     setLoading(true)
     try {
-      const response = await fetch(`https://${projectId}.functions.supabase.co/server/make-server-7f416d54/admin/register`, {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/admin/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

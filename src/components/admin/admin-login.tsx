@@ -35,7 +35,7 @@ export function AdminLogin({ onLogin, onRequestSignup }: AdminLoginProps) {
     setLoading(true)
     
     try {
-      const response = await fetch(`https://${projectId}.functions.supabase.co/server/make-server-7f416d54/admin/login`, {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export function AdminLogin({ onLogin, onRequestSignup }: AdminLoginProps) {
     }
     setLoading(true)
     try {
-      const response = await fetch(`https://${projectId}.functions.supabase.co/server/make-server-7f416d54/admin/register`, {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/admin/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
