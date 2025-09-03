@@ -61,6 +61,8 @@ interface Session {
 const generateId = () => crypto.randomUUID()
 
 // Routes
+app.get('/', (c) => c.json({ ok: true, info: 'BarJukebox server function', health: '/health', base: '/make-server-7f416d54' }))
+app.get('/health', (c) => c.json({ status: 'ok' }))
 app.get('/make-server-7f416d54/session/:sessionId', async (c) => {
   try {
     const sessionId = c.req.param('sessionId')
