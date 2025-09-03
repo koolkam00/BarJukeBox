@@ -76,7 +76,7 @@ export function PatronApp({ sessionId }: PatronAppProps) {
   const fetchSession = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/session/${sessionId}`, {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/session/${sessionId}`, {
         headers: { 'Authorization': `Bearer ${publicAnonKey}` }
       })
       
@@ -96,7 +96,7 @@ export function PatronApp({ sessionId }: PatronAppProps) {
 
   const fetchQueue = async () => {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/queue/${sessionId}`, {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/queue/${sessionId}`, {
         headers: { 'Authorization': `Bearer ${publicAnonKey}` }
       })
       
@@ -120,7 +120,7 @@ export function PatronApp({ sessionId }: PatronAppProps) {
     // Simulate Apple Pay processing
     setTimeout(async () => {
       try {
-        const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/queue/${sessionId}/add`, {
+        const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/queue/${sessionId}/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
