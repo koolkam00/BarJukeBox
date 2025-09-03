@@ -33,7 +33,7 @@ export function AdminAnalytics({ sessionId, accessToken, onNavigate, onLogout }:
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7f416d54/analytics/${sessionId}`, {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/analytics/${sessionId}`, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       })
       

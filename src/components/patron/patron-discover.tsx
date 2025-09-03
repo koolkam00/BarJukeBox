@@ -49,7 +49,7 @@ export function PatronDiscover({ session, onSongSelect, onNavigate }: PatronDisc
     try {
       setLoading(true)
       setError(null)
-      const base = `https://${projectId}.supabase.co/functions/v1/make-server-7f416d54/search`
+      const base = `https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/search`
       const params = new URLSearchParams()
       if (searchQuery) params.set('q', searchQuery)
       if (provider) params.set('provider', provider)
