@@ -3,7 +3,7 @@ import { BarChart3, Music, DollarSign, Monitor, LogOut, Settings } from 'lucide-
 import { Button } from '../ui/button'
 import { Card, CardContent } from '../ui/card'
 
-type AdminScreen = 'dashboard' | 'pricing' | 'analytics' | 'devices'
+type AdminScreen = 'dashboard' | 'pricing' | 'analytics' | 'devices' | 'library'
 
 interface AdminSidebarProps {
   currentScreen: AdminScreen
@@ -36,6 +36,12 @@ export function AdminSidebar({ currentScreen, onNavigate, onLogout }: AdminSideb
       label: 'Devices',
       icon: Monitor,
       description: 'TV displays'
+    },
+    {
+      id: 'library' as AdminScreen,
+      label: 'Library Filters',
+      icon: Settings,
+      description: 'Providers & allow/block lists'
     }
   ]
 

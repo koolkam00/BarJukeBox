@@ -37,18 +37,24 @@ export function PatronDiscover({ session, onSongSelect, onNavigate }: PatronDisc
   const [songs, setSongs] = useState<Song[]>([])
   const [loading, setLoading] = useState(false)
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null)
+  const [provider, setProvider] = useState<'all' | 'spotify' | 'apple'>('all')
+  const [error, setError] = useState<string | null>(null)
 
   // Fetch songs on mount and search changes
   useEffect(() => {
     fetchSongs()
-  }, [searchQuery])
+  }, [searchQuery, provider])
 
   const fetchSongs = async () => {
     try {
       setLoading(true)
-      const url = searchQuery 
-        ? `https://${projectId}.supabase.co/functions/v1/make-server-7f416d54/search?q=${encodeURIComponent(searchQuery)}`
-        : `https://${projectId}.supabase.co/functions/v1/make-server-7f416d54/search`
+      setError(null)
+      const base = `https://${projectId}.supabase.co/functions/v1/make-server-7f416d54/search`
+      const params = new URLSearchParams()
+      if (searchQuery) params.set('q', searchQuery)
+      if (provider) params.set('provider', provider)
+      params.set('sessionId', session.id)
+      const url = `${base}?${params.toString()}`
 
       const response = await fetch(url, {
         headers: { 'Authorization': `Bearer ${publicAnonKey}` }
@@ -57,9 +63,13 @@ export function PatronDiscover({ session, onSongSelect, onNavigate }: PatronDisc
       if (response.ok) {
         const songsData = await response.json()
         setSongs(songsData)
+      } else {
+        setError('Search failed. Showing limited results.')
+        setSongs([])
       }
     } catch (error) {
       console.error('Error fetching songs:', error)
+      setError('Network error. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -101,6 +111,12 @@ export function PatronDiscover({ session, onSongSelect, onNavigate }: PatronDisc
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/20"
             />
+          </div>
+          {/* Providers */}
+          <div className="mt-3 flex gap-2">
+            <Badge variant={provider === 'all' ? 'default' : 'outline'} className="cursor-pointer" onClick={() => setProvider('all')}>All</Badge>
+            <Badge variant={provider === 'spotify' ? 'default' : 'outline'} className="cursor-pointer" onClick={() => setProvider('spotify')}>Spotify</Badge>
+            <Badge variant={provider === 'apple' ? 'default' : 'outline'} className="cursor-pointer" onClick={() => setProvider('apple')}>Apple</Badge>
           </div>
         </div>
       </div>
@@ -173,6 +189,9 @@ export function PatronDiscover({ session, onSongSelect, onNavigate }: PatronDisc
           <h2 className="font-semibold">
             {searchQuery ? `Search Results for "${searchQuery}"` : 'All Songs'}
           </h2>
+          {error && (
+            <div className="text-sm text-red-600 dark:text-red-400">{error}</div>
+          )}
           
           {loading ? (
             <div className="space-y-2">

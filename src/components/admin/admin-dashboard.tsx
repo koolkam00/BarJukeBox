@@ -174,6 +174,9 @@ export function AdminDashboard({ sessionId, accessToken, onNavigate, onLogout }:
               <div>
                 <h1 className="text-2xl font-bold">{session?.barName || 'BarJukebox Admin'}</h1>
                 <p className="text-muted-foreground">Session Dashboard</p>
+                {session?.id && (
+                  <p className="text-xs text-muted-foreground mt-1">Session ID: {session.id}</p>
+                )}
               </div>
               <div className="flex items-center gap-4">
                 <Badge variant={session?.isOpen ? "default" : "secondary"} className="px-3 py-1">
@@ -183,6 +186,12 @@ export function AdminDashboard({ sessionId, accessToken, onNavigate, onLogout }:
                   <p className="text-sm text-muted-foreground">Price per song</p>
                   <p className="font-semibold">${session?.pricePerSong || 3}</p>
                 </div>
+                {session?.id && (
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(`${window.location.origin}/patron.html?session=${session.id}`)}>Copy Patron Link</Button>
+                    <Button variant="outline" size="sm" onClick={() => window.open(`/tv.html?session=${session.id}`, '_blank')}>Open TV</Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

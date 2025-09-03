@@ -1,5 +1,8 @@
 import React from 'react'
+import { createRoot } from 'react-dom/client'
 import { AdminPanel } from './components/admin-panel'
+import './index.css'
+import './styles/globals.css'
 
 export default function AdminEntry() {
   return (
@@ -7,4 +10,9 @@ export default function AdminEntry() {
       <AdminPanel />
     </div>
   )
+}
+
+const rootElement = document.getElementById('root')
+if (rootElement) {
+  createRoot(rootElement).render(<AdminEntry />)
 }

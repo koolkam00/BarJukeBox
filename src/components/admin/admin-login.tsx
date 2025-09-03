@@ -14,13 +14,15 @@ interface User {
 
 interface AdminLoginProps {
   onLogin: (user: User, accessToken: string) => void
+  onRequestSignup: () => void
 }
 
-export function AdminLogin({ onLogin }: AdminLoginProps) {
+export function AdminLogin({ onLogin, onRequestSignup }: AdminLoginProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  // Signup inputs moved to dedicated signup page
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,6 +54,36 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
       }
     } catch (error) {
       console.error('Login error:', error)
+      toast.error('Connection failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCreateAccount = async () => {
+    if (!email || !password || !barName || !username) {
+      toast.error('Enter email, password, bar name, and username')
+      return
+    }
+    setLoading(true)
+    try {
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7f416d54/admin/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password, barName, username })
+      })
+      if (response.ok) {
+        const { accessToken, user } = await response.json()
+        toast.success('Account created! Logged in')
+        onLogin(user, accessToken)
+      } else {
+        const error = await response.json()
+        toast.error(error.error || 'Registration failed')
+      }
+    } catch (e) {
+      console.error('Registration error:', e)
       toast.error('Connection failed. Please try again.')
     } finally {
       setLoading(false)
@@ -140,6 +172,13 @@ export function AdminLogin({ onLogin }: AdminLoginProps) {
                 ) : (
                   'Sign In'
                 )}
+              </Button>
+              <Button
+                type="button"
+                onClick={onRequestSignup}
+                className="w-full mt-2 bg-white/10 hover:bg-white/20 text-white border-white/20"
+              >
+                Create Account
               </Button>
             </form>
 
