@@ -24,7 +24,7 @@ export default function PatronEntry() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch(`https://${projectId}.supabase.co/functions/v1/server/sessions/active`)
+        const res = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-7f416d54/sessions/active`)
         if (res.ok) {
           const data = await res.json()
           setAvailableSessions(data)
