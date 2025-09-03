@@ -63,7 +63,7 @@ const generateId = () => crypto.randomUUID()
 // Routes
 app.get('/', (c) => c.json({ ok: true, info: 'BarJukebox server function', health: '/health', base: '/make-server-7f416d54' }))
 app.get('/health', (c) => c.json({ status: 'ok' }))
-app.get('/make-server-7f416d54/session/:sessionId', async (c) => {
+app.get('/session/:sessionId', async (c) => {
   try {
     const sessionId = c.req.param('sessionId')
     const session = await kv.get(`session:${sessionId}`)
@@ -75,7 +75,7 @@ app.get('/make-server-7f416d54/session/:sessionId', async (c) => {
   }
 })
 
-app.post('/make-server-7f416d54/session', async (c) => {
+app.post('/session', async (c) => {
   try {
     const { barName, pricePerSong = 3, maxSongLength = 300, explicitFilter = true } = await c.req.json()
     let ownerId: string | undefined = undefined
@@ -105,7 +105,7 @@ app.post('/make-server-7f416d54/session', async (c) => {
   }
 })
 
-app.get('/make-server-7f416d54/sessions/active', async (c) => {
+app.get('/sessions/active', async (c) => {
   try {
     const sessions = (await kv.getByPrefix('session:')) as Session[]
     const active = (sessions || []).filter((s) => s?.isOpen)
@@ -116,7 +116,7 @@ app.get('/make-server-7f416d54/sessions/active', async (c) => {
   }
 })
 
-app.get('/make-server-7f416d54/queue/:sessionId', async (c) => {
+app.get('/queue/:sessionId', async (c) => {
   try {
     const sessionId = c.req.param('sessionId')
     const queue = await kv.get(`queue:${sessionId}`) || []
@@ -127,7 +127,7 @@ app.get('/make-server-7f416d54/queue/:sessionId', async (c) => {
   }
 })
 
-app.post('/make-server-7f416d54/queue/:sessionId/add', async (c) => {
+app.post('/queue/:sessionId/add', async (c) => {
   try {
     const sessionId = c.req.param('sessionId')
     const { songId, song, userId, dedication, tip } = await c.req.json()
@@ -157,7 +157,7 @@ app.post('/make-server-7f416d54/queue/:sessionId/add', async (c) => {
   }
 })
 
-app.post('/make-server-7f416d54/admin/login', async (c) => {
+app.post('/admin/login', async (c) => {
   try {
     const { email, password } = await c.req.json()
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
@@ -169,7 +169,7 @@ app.post('/make-server-7f416d54/admin/login', async (c) => {
   }
 })
 
-app.post('/make-server-7f416d54/admin/register', async (c) => {
+app.post('/admin/register', async (c) => {
   try {
     const { email, password, barName, username } = await c.req.json()
     if (!email || !password || !barName || !username) {
@@ -206,7 +206,7 @@ app.post('/make-server-7f416d54/admin/register', async (c) => {
   }
 })
 
-app.post('/make-server-7f416d54/admin/queue/:sessionId/skip', async (c) => {
+app.post('/admin/queue/:sessionId/skip', async (c) => {
   try {
     const accessToken = c.req.header('Authorization')?.split(' ')[1]
     const { data: { user } } = await supabase.auth.getUser(accessToken)
@@ -226,7 +226,7 @@ app.post('/make-server-7f416d54/admin/queue/:sessionId/skip', async (c) => {
   }
 })
 
-app.get('/make-server-7f416d54/search', async (c) => {
+app.get('/search', async (c) => {
   try {
     const query = c.req.query('q') || ''
     const providerParam = (c.req.query('provider') || 'all').toLowerCase()
@@ -318,7 +318,7 @@ app.get('/make-server-7f416d54/search', async (c) => {
   }
 })
 
-app.get('/make-server-7f416d54/filters', async (c) => {
+app.get('/filters', async (c) => {
   try {
     const accessToken = c.req.header('Authorization')?.split(' ')[1]
     const { data: { user } } = await supabase.auth.getUser(accessToken)
@@ -337,7 +337,7 @@ app.get('/make-server-7f416d54/filters', async (c) => {
   }
 })
 
-app.post('/make-server-7f416d54/filters', async (c) => {
+app.post('/filters', async (c) => {
   try {
     const accessToken = c.req.header('Authorization')?.split(' ')[1]
     const { data: { user } } = await supabase.auth.getUser(accessToken)
