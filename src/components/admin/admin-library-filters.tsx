@@ -34,7 +34,7 @@ export function AdminLibraryFilters({ accessToken, onNavigate, onLogout }: Admin
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/filters`, {
+        const res = await fetch(`https://${projectId}.functions.supabase.co/server/make-server-7f416d54/filters`, {
           headers: { 'Authorization': `Bearer ${accessToken}` }
         })
         if (res.ok) {
@@ -55,7 +55,7 @@ export function AdminLibraryFilters({ accessToken, onNavigate, onLogout }: Admin
 
   const save = async () => {
     try {
-      const res = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/filters`, {
+      const res = await fetch(`https://${projectId}.functions.supabase.co/server/make-server-7f416d54/filters`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${accessToken}`,

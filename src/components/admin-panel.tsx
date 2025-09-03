@@ -53,7 +53,7 @@ export function AdminPanel() {
       if (creatingSession || sessionId) return
       try {
         setCreatingSession(true)
-        const res = await fetch(`https://${projectId}.supabase.co/functions/v1/server/make-server-7f416d54/session`, {
+        const res = await fetch(`https://${projectId}.functions.supabase.co/server/make-server-7f416d54/session`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
